@@ -52,13 +52,18 @@ class UserController extends Controller
         return view('users-listing', compact('users', 'results') );
     }
     public function ajax_show(Request $request ) {
-        dd($request);
-        if($request->search == '') {
-            $users = User::all();}
-        else{
-            $users = User::where('name','like','%'. $request->search .'%')->orWhere('email','like','%'. $request->search .'%')->orWhere('created_at','like','%'. $request->search .  '%')->get();
+        // dd( $request->all() );
+        $data = DB::table('users')
+        ->where(function($query) use ($request) {
+            $query->where('name','like','%'. $request->search .'%')
+                ->orWhere('email','like','%'. $request->search .'%');
+        });
+        if($request->date){
+           $data =$data->whereDate('created_at', $request->date);
         }
-        return response()->json($users);
+        $data= $data->get();
+
+        return response()->json($data);
     }
     public function ajax_search( Request $request ) {
         $users = User::where('name','like','%'. $request->search .'%')->orWhere('email','like','%'. $request->search .'%')->orWhere('created_at','like','%'. $request->search .  '%')->get();

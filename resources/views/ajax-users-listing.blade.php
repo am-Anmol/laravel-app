@@ -25,8 +25,10 @@
                         </li>
                     </ul>
                     <form class="d-flex" role="search" id="search_form" method="get" action="javascript:void(0)">
-                        <input class="form-control me-2" type="search" placeholder="Search by name, email and date" aria-label="Search" name="search" onKeyup=print1() id="search" required>
-                        <!-- <button class="btn btn-outline-success me-2" type="submit" id="search_form_button">Search Using AJAX</button> -->
+                        @csrf
+                        <input class="form-control me-2" type="date"  aria-label="Date" onchange="print1()" name="date" id="date" required>
+                        <input class="form-control me-2" type="search" placeholder="Search by name, email and date" aria-label="Search" name="search" onKeyup="print1()" id="search" required>
+                        
                     </form>
                     <a href="{{route('users')}}" class="btn btn-primary">Add User</a>
                 </div>  
@@ -57,40 +59,38 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>  
     <script>
        $( document ).ready(function() {
-        print1();});
+        print1();
+        });
         function print1(query = ''){
             var search = $('#search').val();
+            var date = $('#date').val();
+            // alert(date);
             // alert(search);
             $.ajax({
                 url: "{{ route('users.ajshow') }}",
                 type: "GET",
                 dataType:"JSON",
-                data: {search : search},
-                processData : false,
-                contentType:false,
-                
+                data: {
+                    _token:"{{csrf_token()}}",
+                    search : search,
+                    date: date
+                },
                 success: function(response) {
+                    var $tr =``;
                     $.each(response, function(i, item) {
-                        var $tr = $('<tr>').append(
-                        $('<td>').text(item.id),
-                            $('<td>').text(item.name),
-                            $('<td>').text(item.email),
-                            $('<td>').text(item.created_at)
-                        );
-                        $("#my-table").append($tr);
+                     $tr += `
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.name}</td>
+                            <td>${item.email}</td>
+                            <td>${item.created_at}</td>
+                        </tr>`;
                     });
+                    $("#my-table").html($tr);
                 }
             });
             
         }
-
-
-        // $(document).on('keyup', '#search', function(){
-        //     var query = $(this).val();
-        //     console.log(query);
-        //     print1(query);
-        //    });
-
     </script>          
     </body>
 </html>
