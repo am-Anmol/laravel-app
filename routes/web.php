@@ -32,6 +32,9 @@ Route::get('/users/ajax-show', function () {
 Route::get('/users/ajshow', [UserController::class,'ajax_show'])->name('users.ajshow');
 Route::get('/users/ajsearch', [UserController::class,'ajax_search'])->name('users.ajsearch');
 
+Route::get('/users/{id}/edit', [UserController::class,'edit'])->name('users.edit');
+Route::post('/users/{id}', [UserController::class,'update'])->name('users.update');
+Route::post('/users/export', [UserController::class,'export'])->name('users.export');
 
 //Domain 1: abc.anmol.com
 //Domain 2: xyz.anmol.com

@@ -18,7 +18,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{route('users.show')}}">User Listing</a>
+                            <a class="nav-link" aria-current="page" href="{{route('users.show')}}">User Listing</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route('users.ajax-show')}}">User Listing using AJAX</a>
@@ -33,6 +33,7 @@
                         </select>
                         <input class="form-control me-2" type="date"  aria-label="Date" onchange="print1()" name="date" id="date">
                         <input class="form-control me-2" type="search" placeholder="Search by name & email" aria-label="Search" name="search" onKeyup="print1()" id="search">
+                        <a class="btn btn-success me-2" onclick="export_data()">Export</a>
                         
                     </form>
                     <a href="{{route('users')}}" class="btn btn-primary">Add User</a>
@@ -55,6 +56,7 @@
                         <th scope="col">Gender</th>
                         <th scope="col">Image</th>
                         <th scope="col">Created Date</th>
+                        <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody id="my-table">
@@ -89,17 +91,49 @@
                     $.each(response, function(i, item) {
                      $tr += `
                         <tr>
-                            <td>${item.id}</td>
+                            <td>${i+1}</td>
                             <td>${item.name}</td>
                             <td>${item.email}</td>
                             <td>${item.gender}</td>
                             <td><img src="${item.image}" width="100" height="100"></td>
                             <td>${item.created_at}</td>
+                            <td>
+                                <a href="http://laravel-app.test/users/${item.id}/edit">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+                                    </svg>
+                                </a>
+                            </td>
                         </tr>`;
                     });
                     $("#my-table").html($tr);
                 }
             });
+            
+        }
+        function export_data(){
+            var search = $('#search').val();
+            var date = $('#date').val();
+            var gender = $('#gender').val();
+            console.log(search,date,gender);
+            // alert(date);
+            // alert(gender);
+            $.ajax({
+                url: "{{ route('users.export') }}",
+                type: "POST",
+                dataType:"JSON",
+                data: {
+                    _token:"{{csrf_token()}}",
+                    search : search,
+                    date: date,
+                    gender:gender
+                },
+                success: function() {
+                    window.location = "{{ route('users.show') }}";
+                }
+            });
+            console.log("Hello Reached");
             
         }
     </script>          

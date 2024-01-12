@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Validator;
+use App\Exports\UserExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -35,7 +37,6 @@ class UserController extends Controller
         $user->gender = $request->gender;
         $imageName = time().'.'.$request->image->extension();
         $user->image = $imageName;
-        // dd($imageName);
         $request->image->move(public_path('images'), $imageName);
         $user->save();
 
@@ -79,5 +80,26 @@ class UserController extends Controller
     public function ajax_search( Request $request ) {
         $users = User::where('name','like','%'. $request->search .'%')->orWhere('email','like','%'. $request->search .'%')->orWhere('created_at','like','%'. $request->search .  '%')->get();
         return response()->json($users);
+    }
+
+    public function edit ($id) {
+        $user = User::findOrFail($id);
+        return view('users-edit', compact('user'));
+    }
+
+    public function update (Request $request, $id) {
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->gender = $request->gender;
+        $user->save();
+        return redirect()->route('users.ajax-show');
+
+    }
+
+    public function export(Request $request)
+    {   
+        dd($request->all());
+        return Excel::download(new UserExport($request), 'users.xlsx');
     }
 }   

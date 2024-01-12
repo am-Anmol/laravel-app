@@ -41,6 +41,11 @@ class User extends Authenticatable
 
     public function getImageAttribute($value)
     {
-        return url('public/images/'.$value);
+        return url('images/'.$value);
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return date('d/m/Y', strtotime($value));
     }
 }
