@@ -26,8 +26,13 @@
                     </ul>
                     <form class="d-flex" role="search" id="search_form" method="get" action="javascript:void(0)">
                         @csrf
-                        <input class="form-control me-2" type="date"  aria-label="Date" onchange="print1()" name="date" id="date" required>
-                        <input class="form-control me-2" type="search" placeholder="Search by name, email and date" aria-label="Search" name="search" onKeyup="print1()" id="search" required>
+                        <select class="form-select me-2" aria-label="Gender" id="gender" onchange="print1()">
+                            <option value="">Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                        <input class="form-control me-2" type="date"  aria-label="Date" onchange="print1()" name="date" id="date">
+                        <input class="form-control me-2" type="search" placeholder="Search by name & email" aria-label="Search" name="search" onKeyup="print1()" id="search">
                         
                     </form>
                     <a href="{{route('users')}}" class="btn btn-primary">Add User</a>
@@ -47,6 +52,8 @@
                         <th scope="col">#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Email</th>
+                        <th scope="col">Gender</th>
+                        <th scope="col">Image</th>
                         <th scope="col">Created Date</th>
                     </tr>
                 </thead>
@@ -64,8 +71,9 @@
         function print1(query = ''){
             var search = $('#search').val();
             var date = $('#date').val();
+            var gender = $('#gender').val();
             // alert(date);
-            // alert(search);
+            // alert(gender);
             $.ajax({
                 url: "{{ route('users.ajshow') }}",
                 type: "GET",
@@ -73,7 +81,8 @@
                 data: {
                     _token:"{{csrf_token()}}",
                     search : search,
-                    date: date
+                    date: date,
+                    gender:gender
                 },
                 success: function(response) {
                     var $tr =``;
@@ -83,6 +92,8 @@
                             <td>${item.id}</td>
                             <td>${item.name}</td>
                             <td>${item.email}</td>
+                            <td>${item.gender}</td>
+                            <td><img src="${item.image}" width="100" height="100"></td>
                             <td>${item.created_at}</td>
                         </tr>`;
                     });

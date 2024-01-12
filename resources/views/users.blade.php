@@ -42,6 +42,17 @@
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" id="password" name="password">
             </div>
+            <div class="mb-3">
+                <label for="gender" class="form-label">Gender</label>
+                <select class="form-select me-2" aria-label="Gender" id="gender" name="gender">
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Upload</label>
+                <input type="file" class="form-control" id="image" name="image">
+            </div>
             <button type="submit" class="btn btn-primary" id="user_form_button">Submit</button>
         </form>
     </div>

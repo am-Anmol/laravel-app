@@ -46,6 +46,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Created Date</th>
                     </tr>
                 </thead>
@@ -55,6 +57,8 @@
                             <th scope="row">{{$user->id}}</th>
                             <td>{{$user->name}}</td>
                             <td>{{$user->email}}</td>
+                            <td>{{$user->gender}}</td>
+                            <td>{{$user->image}}</td>
                             <td>{{$user->created_at}}</td>
                         </tr>
                     @endforeach
