@@ -2,7 +2,7 @@
 
 @section('content')
 
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -42,6 +42,7 @@
                         <th scope="col">Image</th>
                         <th scope="col">Created Date</th>
                         <th scope="col">Action</th>
+                        <th scope="col">Owner</th>
                     </tr>
                 </thead>
                 <tbody id="my-table">
@@ -90,6 +91,7 @@
                                     </svg>
                                 </a>
                             </td>
+                            <td>${item.owner}</td>
                         </tr>`;
                     });
                     $("#my-table").html($tr);

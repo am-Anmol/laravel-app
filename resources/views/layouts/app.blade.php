@@ -26,7 +26,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
+                <a class="navbar-brand" href="{{ url('/home') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -35,17 +35,24 @@
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+                    @if (Auth::check())
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{{route('users.show')}}">User Listing</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="{{route('home')}}">User Listing using AJAX</a>
+                            <a class="nav-link" aria-current="page" href="{{route('home')}}">User Listing</a>
+                        </li>
+                        @if (Auth::user()->user_type == 'super-admin')
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{route('admin.show')}}">Admin Listing</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{{route('users.excel-import')}}">Import Excel</a>
                         </li>
+                        @endif
                     </ul>
+                    @endif
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">

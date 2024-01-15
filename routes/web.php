@@ -30,6 +30,7 @@ Route::get('/users', function () {
 
 Route::post('/users/store', [UserController::class,'store'])->name('users.store');
 Route::get('/users/show', [UserController::class,'show'])->name('users.show');
+Route::get('/admin/show', [UserController::class,'admin_show'])->name('admin.show');
 Route::get('/users/search', [UserController::class,'search'])->name('users.search');
 // Route::get('/users/ajax-show', function () {
 //     return view('ajax-users-listing');

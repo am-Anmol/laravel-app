@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Validator;
 use App\Exports\UserExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -34,11 +36,13 @@ class UserController extends Controller
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = bcrypt( $request->password );
+        $user->password = Hash::make( $request->password );
         $user->gender = $request->gender;
         $imageName = time().'.'.$request->image->extension();
         $user->image = $imageName;
         $request->image->move(public_path('images'), $imageName);
+        $user->user_type = 'user';
+        $user->owner = Auth::user()->name;
         $user->save();
 
         
@@ -49,6 +53,11 @@ class UserController extends Controller
         $users = User::all();
 
         return view('users-listing', compact('users') );
+    }
+    public function admin_show( ) {
+        $users = User::where('user_type', 'admin')->get();
+
+        return view('admin-listing', compact('users') );
     }
 
     public function search( Request $request ) {
@@ -65,7 +74,7 @@ class UserController extends Controller
     public function ajax_show(Request $request ) {
         $data = User::where(function($query) use ($request) {
             $query->where('name', 'like', '%'. $request->search .'%')
-                  ->orWhere('email', 'like', '%'. $request->search .'%');
+                ->orWhere('email', 'like', '%'. $request->search .'%');
         })
         ->when($request->date, function($query, $date) {
             $query->whereDate('created_at', $date);
@@ -73,9 +82,13 @@ class UserController extends Controller
         ->when($request->gender, function($query, $gender) {
             $query->where('gender', $gender);
         })
+        ->when(Auth::user()->user_type == 'admin', function($query){
+            $query->where('owner', Auth::user()->name);
+        })
+        ->where('user_type', 'user')
         ->orderBy('id', 'DESC')
         ->get();
-
+        
         return response()->json($data);
     }
     
