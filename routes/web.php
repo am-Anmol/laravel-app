@@ -15,11 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', function () {
+    return view('ajax-users-listing');
+})->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('/users', function () {
     return view('users');
@@ -28,9 +31,9 @@ Route::get('/users', function () {
 Route::post('/users/store', [UserController::class,'store'])->name('users.store');
 Route::get('/users/show', [UserController::class,'show'])->name('users.show');
 Route::get('/users/search', [UserController::class,'search'])->name('users.search');
-Route::get('/users/ajax-show', function () {
-    return view('ajax-users-listing');
-})->name('users.ajax-show');
+// Route::get('/users/ajax-show', function () {
+//     return view('ajax-users-listing');
+// })->name('users.ajax-show');
 
 Route::get('/users/ajshow', [UserController::class,'ajax_show'])->name('users.ajshow');
 Route::get('/users/ajsearch', [UserController::class,'ajax_search'])->name('users.ajsearch');

@@ -61,6 +61,22 @@
                             </div>
                         </div>
 
+                        <div class="row mb-3">
+                            <label for="gender" class="col-md-4 col-form-label text-md-end">{{ __('Gender') }}</label>
+
+                            <div class="col-md-6">
+                                <select class="form-control form-select me-2 @error('name') is-invalid @enderror" aria-label="Gender" id="gender" name="gender" value="{{ old('gender') }}" required autocomplete="gender">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                </select>
+                                @error('gender')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
