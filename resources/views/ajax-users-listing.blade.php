@@ -23,6 +23,9 @@
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="{{route('users.ajax-show')}}">User Listing using AJAX</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{route('users.excel-import')}}">Import Excel</a>
+                        </li>
                     </ul>
                     <form class="d-flex" role="search" id="search_form" method="get" action="javascript:void(0)">
                         @csrf

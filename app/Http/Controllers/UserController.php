@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -107,5 +108,12 @@ class UserController extends Controller
         );
 
         return response()->json($response);
+    }
+
+    public function import(Request $request) 
+    {   
+        Excel::import(new UsersImport, request()->file('file'));
+        
+        return redirect()->route('users.ajax-show');
     }
 }   

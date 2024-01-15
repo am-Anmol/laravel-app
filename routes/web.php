@@ -33,8 +33,19 @@ Route::get('/users/ajshow', [UserController::class,'ajax_show'])->name('users.aj
 Route::get('/users/ajsearch', [UserController::class,'ajax_search'])->name('users.ajsearch');
 
 Route::get('/users/{id}/edit', [UserController::class,'edit'])->name('users.edit');
-Route::post('/users/{id}', [UserController::class,'update'])->name('users.update');
 Route::get('/users/export', [UserController::class,'export'])->name('users.export');
+
+Route::post('/users/import', [UserController::class,'import'])->name('users.import');
+
+Route::get('/users/excel-import', function(){
+    return view('import-users');
+})->name('users.excel-import');
+
+
+Route::post('/users/{id}', [UserController::class,'update'])->name('users.update');
+
+
+
 
 //Domain 1: abc.anmol.com
 //Domain 2: xyz.anmol.com
@@ -51,10 +62,10 @@ Route::get('/users/export', [UserController::class,'export'])->name('users.expor
 // });
 
 
-Route::group(['domain' => '{domain}'], function() {
-    Route::get('/', function($domain) {
-        return 'welcome , you are visting this' . $domain;
-    });
-});
+// Route::group(['domain' => '{domain}'], function() {
+//     Route::get('/', function($domain) {
+//         return 'welcome , you are visting this' . $domain;
+//     });
+// });
 
 
