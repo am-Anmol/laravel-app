@@ -73,6 +73,7 @@ class UserController extends Controller
         ->when($request->gender, function($query, $gender) {
             $query->where('gender', $gender);
         })
+        ->orderBy('id', 'DESC')
         ->get();
 
         return response()->json($data);
