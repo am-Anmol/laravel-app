@@ -99,7 +99,13 @@ class UserController extends Controller
 
     public function export(Request $request)
     {   
-        dd($request->all());
-        return Excel::download(new UserExport($request), 'users.xlsx');
+        // dd($request->all());
+        $file = Excel::raw(new UserExport($request), 'Xlsx');
+        $response =  array(
+            'name' => "users.xlsx",
+            'file' => "data:application/vnd.ms-excel;base64,".base64_encode($file)
+        );
+
+        return response()->json($response);
     }
 }   

@@ -116,25 +116,34 @@
             var search = $('#search').val();
             var date = $('#date').val();
             var gender = $('#gender').val();
-            console.log(search,date,gender);
+            // console.log(search,date,gender);
             // alert(date);
             // alert(gender);
             $.ajax({
                 url: "{{ route('users.export') }}",
-                type: "POST",
+                type: "GET",
                 dataType:"JSON",
                 data: {
-                    _token:"{{csrf_token()}}",
                     search : search,
                     date: date,
                     gender:gender
+                },  
+                success: function (response) {
+                    var a = document.createElement("a");
+                    a.href = response.file; 
+                    a.download = response.name;
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                    $("#downloadExcel").show();
+                    $("#ExcelDownloadLoader").hide();
                 },
-                success: function() {
-                    window.location = "{{ route('users.show') }}";
+                error: function (ajaxContext) {
+                    $("#downloadExcel").show();
+                    $("#ExcelDownloadLoader").hide();
+                    alert('Export error: '+ajaxContext.responseText);
                 }
-            });
-            console.log("Hello Reached");
-            
+            });            
         }
     </script>          
     </body>

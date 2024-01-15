@@ -27,20 +27,20 @@ class UserExport implements FromCollection
     public function collection()
     {   
         $request=$this->data;
-        dd($request);
-        return User::all();
+        // dd($request);
+        // return User::all();
 
-        // return User::where(function($query) use ($request) {
-        //     $query->where('name', 'like', '%'. $request->search .'%')
-        //           ->orWhere('email', 'like', '%'. $request->search .'%');
-        // })
-        // ->when($request->date, function($query, $date) {
-        //     $query->whereDate('created_at', $date);
-        // })
-        // ->when($request->gender, function($query, $gender) {
-        //     $query->where('gender', $gender);
-        // })
-        // ->get();
+        return User::where(function($query) use ($request) {
+            $query->where('name', 'like', '%'. $request->search .'%')
+                  ->orWhere('email', 'like', '%'. $request->search .'%');
+        })
+        ->when($request->date, function($query, $date) {
+            $query->whereDate('created_at', $date);
+        })
+        ->when($request->gender, function($query, $gender) {
+            $query->where('gender', $gender);
+        })
+        ->get();
         // // return User::all();
     }
 }
