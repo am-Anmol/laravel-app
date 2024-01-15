@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use app\Jobs\SendRegisterEmailJob;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +54,12 @@ Route::post('/users/{id}', [UserController::class,'update'])->name('users.update
 
 
 
-
+Route::get('email-test', function(){
+    $details['email'] = 'your_email@gmail.com';
+    dispatch(new SendRegisterEmailJob($details));
+    dd('done');
+});
+    
 //Domain 1: abc.anmol.com
 //Domain 2: xyz.anmol.com
 

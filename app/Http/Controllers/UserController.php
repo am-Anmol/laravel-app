@@ -11,6 +11,7 @@ use App\Exports\UserExport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Jobs\SendRegisterEmailJob;
 
 class UserController extends Controller
 {
@@ -45,7 +46,8 @@ class UserController extends Controller
         $user->owner = Auth::user()->name;
         $user->save();
 
-        
+        dispatch(new SendRegisterEmailJob($user));
+
         return response()->json( [ 'success' => 'User registered successfully!' ] );
     }
 
