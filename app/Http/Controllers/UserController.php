@@ -155,6 +155,6 @@ class UserController extends Controller
     {   
         Excel::import(new UsersImport, request()->file('file'));
         
-        return redirect()->route('users.ajax-show');
+        return redirect()->route('home');
     }
-}   
+}
