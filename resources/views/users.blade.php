@@ -66,7 +66,7 @@
             position: 'topRight'
             
                     });
-            window.location = "{{ route('users.show') }}";
+            window.location = "{{ route('home') }}";
         }
                     
         },
