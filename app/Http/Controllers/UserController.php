@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\UsersImport;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserRequest;
 use Illuminate\Support\Facades\DB;
 use Validator;
 use App\Exports\UserExport;
@@ -58,10 +59,34 @@ class UserController extends Controller
     }
     public function admin_show( ) {
         $users = User::where('user_type', 'admin')->get();
-
+        if ( request()->ajax() ) {
+            return response()->json($users);
+        }
         return view('admin-listing', compact('users') );
     }
+    public function admin_show2( ) {
+        $users = User::where(function($query) {
+            $query->where('user_type', 'admin');
+        })
+        ->whereNotIn('id', [Auth::user()->id])
+        ->get();
+        if ( request()->ajax() ) {
+            return response()->json($users);
+        }
+    }
 
+    public function admin_show3( ) {
+        $users = User::whereIn('owner', 
+                    UserRequest::where('mapped_owner', Auth::user()->name)
+                    ->where('is_approved', 1)
+                    ->pluck('owner')
+                )
+                ->get();
+        if ( request()->ajax() ) {
+            return response()->json($users);
+        }
+        
+    }
     public function search( Request $request ) {
         $users = DB::table('users')
         ->where(function($query) use ($request) {

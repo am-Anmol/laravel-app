@@ -55,6 +55,7 @@
     <script>
        $( document ).ready(function() {
         print1();
+        print2();
         });
         function print1(query = ''){
             var search = $('#search').val();
@@ -97,7 +98,6 @@
                     $("#my-table").html($tr);
                 }
             });
-            
         }
         function export_data(){
             var search = $('#search').val();
@@ -132,5 +132,33 @@
                 }
             });            
         }
+        function print2(){
+        
+        $.ajax({
+            url: "{{ route('admin.show3') }}",
+            type: "GET",
+            dataType:"JSON",
+            
+            success: function(response) {
+                console.log(response);
+                var $tr =``;
+                    $.each(response, function(i, item) {
+                     $tr += `
+                        <tr>
+                            <td>${i+1}</td>
+                            <td>${item.name}</td>
+                            <td>${item.email}</td>
+                            <td>${item.gender}</td>
+                            <td><img src="${item.image}" width="100" height="100"></td>
+                            <td>${item.created_at}</td>
+                            <td></td>
+                            <td>${item.owner}</td>
+                        </tr>`;
+                    });
+                    $("#my-table").append($tr);
+            }
+        });
+        
+    }
     </script>          
 @endsection

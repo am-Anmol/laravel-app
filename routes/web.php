@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRequestController;
 use Illuminate\Support\Facades\Route;
 use app\Jobs\SendRegisterEmailJob;
 
@@ -32,6 +33,10 @@ Route::get('/users', function () {
 Route::post('/users/store', [UserController::class,'store'])->name('users.store');
 Route::get('/users/show', [UserController::class,'show'])->name('users.show');
 Route::get('/admin/show', [UserController::class,'admin_show'])->name('admin.show');
+Route::get('/admin/show2', [UserController::class,'admin_show2'])->name('admin.show2');
+Route::get('/admin/show3', [UserController::class,'admin_show3'])->name('admin.show3');
+
+
 Route::get('/users/search', [UserController::class,'search'])->name('users.search');
 // Route::get('/users/ajax-show', function () {
 //     return view('ajax-users-listing');
@@ -52,13 +57,14 @@ Route::get('/users/excel-import', function(){
 
 Route::post('/users/{id}', [UserController::class,'update'])->name('users.update');
 
+Route::get('/user-admin/show', function(){
+    return view('admin-user-listing');
+})->name('user-admin.show');
 
+Route::get('/requests', [UserRequestController::class,'show'])->name('request.show');
+Route::get('/request/{id}/send', [UserRequestController::class, 'store'])->name('request.send');
 
-Route::get('email-test', function(){
-    $details['email'] = 'your_email@gmail.com';
-    dispatch(new SendRegisterEmailJob($details));
-    dd('done');
-});
+Route::get('/request/{id}/approve', [UserRequestController::class, 'approve'])->name('request.approve');
     
 //Domain 1: abc.anmol.com
 //Domain 2: xyz.anmol.com

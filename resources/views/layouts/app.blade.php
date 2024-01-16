@@ -43,6 +43,14 @@
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{{route('home')}}">User Listing</a>
                         </li>
+                        @if (Auth::user()->user_type == 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{route('user-admin.show')}}">Other Admin Listing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" href="{{route('request.show')}}">Requests</a>
+                        </li>
+                        @endif
                         @if (Auth::user()->user_type == 'super-admin')
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="{{route('admin.show')}}">Admin Listing</a>
